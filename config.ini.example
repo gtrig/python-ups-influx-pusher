@@ -1,0 +1,9 @@
+[timing]
+OK_INTERVAL = 30 #Refresh time in Second when all batteries at 100% charge
+NOT_OK_INTERVAL = 1 #Refresh time in Second when at least one battery is less 100% charge. That includes while charging
+
+[influx]
+url=http://my.influx.server:8086
+token=the_influx_Token
+org=the_org
+bucket=the_bucket
