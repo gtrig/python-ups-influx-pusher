@@ -10,7 +10,6 @@ def nutPullData(host, port, username, password):
         return False
 
     for ups_name, ups_description in nut.list_ups().items():
-        print(ups_name,ups_description);
         ups_vars = nut.list_vars(ups_name)
         ups_vars['name'] = ups_name
         if ups_vars['device.type'] != 'ups':

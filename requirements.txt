@@ -1,0 +1,4 @@
+configparser==5.0.2
+influxdb-client==1.15.0
+nut2==2.1.1
+

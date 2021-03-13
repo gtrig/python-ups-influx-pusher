@@ -43,9 +43,11 @@ while True:
         point.time(datetime.utcnow(), WritePrecision.NS)
         try:
             write_api.write(bucket, org, point)
-            print('data sent')
+            print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
+            print('data sent for: '+ups['name'])
         except:
-            print('Couldnt send data to influx')
+            print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
+            print('Could not send data to influx for:'+ups['name'])
     
     if power_ok:
         time.sleep(general_config.getint('timing','OK_INTERVAL'))
