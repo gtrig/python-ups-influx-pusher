@@ -9,7 +9,7 @@ def nutPullData(host, port, username, password):
         print("there was an error connecting to host:"+host)
         return False
 
-    for ups_name, ups_description in nut.list_ups().items():
+    for ups_name,_description in nut.list_ups().items():
         ups_vars = nut.list_vars(ups_name)
         ups_vars['name'] = ups_name
         if ups_vars['device.type'] != 'ups':

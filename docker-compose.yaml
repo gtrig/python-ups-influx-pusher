@@ -1,0 +1,31 @@
+version: "3.8"
+
+networks:
+  Proxy:
+    external:
+      name: Proxy
+
+volumes:
+  influx_data:
+
+services: 
+  influxdb:
+    restart: unless-stopped
+    image: influxdb:latest
+    networks: 
+      - Proxy
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.influxdb-http-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.influxdb-http.middlewares=influxdb-http-to-https@docker"
+      # - "traefik.http.routers.influxdb-http.rule=Host(`influxdb.local.nksl.eu`)"
+      # - "traefik.http.routers.influxdb-https.rule=Host(`influxdb.local.nksl.eu`)"
+      - "traefik.http.routers.influxdb-https.tls=true"
+      - "traefik.http.services.influxdb-https.loadbalancer.server.port=8086"
+
+  data_collector:
+    restart: unless-stopped
+    build: ./
+    depends_on: 
+      - influxdb
+    
