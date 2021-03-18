@@ -11,6 +11,8 @@ services:
     image: influxdb:latest
     networks: 
       - Proxy
+    ports:
+      - 8086:8086
     labels: 
       - "traefik.enable=true"
       - "traefik.http.middlewares.influxdb-http-to-https.redirectscheme.scheme=https"

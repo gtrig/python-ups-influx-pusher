@@ -1,3 +1,4 @@
 __pycache__/nut.cpython-38.pyc
 *.ini
-.vscode/sftp.json
+.vscode/*
+.vscode

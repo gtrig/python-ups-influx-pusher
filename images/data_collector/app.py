@@ -45,9 +45,11 @@ while True:
             write_api.write(bucket, org, point)
             print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
             print('data sent for: '+ups['name'])
-        except:
+        except Exception as e:
             print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
             print('Could not send data to influx for:'+ups['name'])
+            print(e)
+            print(influx_url,token,org,bucket)
     
     if power_ok:
         time.sleep(general_config.getint('timing','OK_INTERVAL'))
