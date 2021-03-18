@@ -5,9 +5,6 @@ networks:
     external:
       name: Proxy
 
-volumes:
-  influx_data:
-
 services: 
   influxdb:
     restart: unless-stopped
@@ -18,14 +15,17 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.influxdb-http-to-https.redirectscheme.scheme=https"
       - "traefik.http.routers.influxdb-http.middlewares=influxdb-http-to-https@docker"
-      # - "traefik.http.routers.influxdb-http.rule=Host(`influxdb.local.nksl.eu`)"
-      # - "traefik.http.routers.influxdb-https.rule=Host(`influxdb.local.nksl.eu`)"
+      - "traefik.http.routers.influxdb-http.rule=Host(`influxdb.local.nksl.eu`)"
+      - "traefik.http.routers.influxdb-https.rule=Host(`influxdb.local.nksl.eu`)"
       - "traefik.http.routers.influxdb-https.tls=true"
       - "traefik.http.services.influxdb-https.loadbalancer.server.port=8086"
+    volumes: 
+      - ./files/influxdb/data:/var/lib/influxdb2
+      - ./files/influxdb/config:/etc/influxdb2
 
   data_collector:
     restart: unless-stopped
-    build: ./
+    build: ./images/data_collector
     depends_on: 
       - influxdb
     
