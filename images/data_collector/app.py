@@ -28,28 +28,29 @@ while True:
     power_ok=True
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
-    for ups in ups_data:
-        if ups == False: 
-            continue
-        if ups['ups.status']!='OL' or ups['battery.charge']<100 :
-            power_ok=False
-        
-        point = Point("ups")
-        point.tag("ups_name", ups['name'] )    
-        for entry in ups:
-            if isinstance(ups[entry],(float,int)):
-                point.field(entry, ups[entry])
-        
-        point.time(datetime.utcnow(), WritePrecision.NS)
-        try:
-            write_api.write(bucket, org, point)
-            print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
-            print('data sent for: '+ups['name'])
-        except Exception as e:
-            print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
-            print('Could not send data to influx for:'+ups['name'])
-            print(e)
-            print(influx_url,token,org,bucket)
+    for server_data in ups_data:
+        for ups in server_data:
+            if ups == False: 
+                continue
+            if ups['ups.status']!='OL' or ups['battery.charge']<100 :
+                power_ok=False
+            
+            point = Point("ups")
+            point.tag("ups_name", ups['name'] )    
+            for entry in ups:
+                if isinstance(ups[entry],(float,int)):
+                    point.field(entry, ups[entry])
+            
+            point.time(datetime.utcnow(), WritePrecision.NS)
+            try:
+                write_api.write(bucket=bucket, org=org, record=point)
+                print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
+                print('data sent for: '+ups['name'])
+            except Exception as e:
+                print(datetime.now().strftime("%d/%m/%Y@%H:%M:%S"),end=':')
+                print('Could not send data to influx for:'+ups['name'])
+                print(e)
+                print(influx_url,token,org,bucket)
     
     if power_ok:
         time.sleep(general_config.getint('timing','OK_INTERVAL'))

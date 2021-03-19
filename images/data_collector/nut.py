@@ -8,8 +8,10 @@ def nutPullData(host, port, username, password):
     except:
         print("there was an error connecting to host:"+host)
         return False
-
+    
+    ups_data = []
     for ups_name,_description in nut.list_ups().items():
+        
         ups_vars = nut.list_vars(ups_name)
         ups_vars['name'] = ups_name
         if ups_vars['device.type'] != 'ups':
@@ -18,5 +20,7 @@ def nutPullData(host, port, username, password):
         for element in ups_vars:
             if ups_vars[element].replace('.','',1).isdigit():
                 ups_vars[element] = float(ups_vars[element])
+        
+        ups_data.append(ups_vars)
     
-    return ups_vars
+    return ups_data

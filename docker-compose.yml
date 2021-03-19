@@ -24,10 +24,15 @@ services:
     volumes: 
       - ./files/influxdb/data:/var/lib/influxdb2
       - ./files/influxdb/config:/etc/influxdb2
+    environment: 
+      INFLUXD_LOG_LEVEL: debug
 
-  data_collector:
-    restart: unless-stopped
-    build: ./images/data_collector
-    depends_on: 
-      - influxdb
+  # data_collector:
+  #   restart: unless-stopped
+  #   build: ./images/data_collector
+  #   volumes:
+  #     - ./files/data_collector/config.ini:/usr/src/app/config.ini
+  #     - ./files/data_collector/nut_servers.ini:/usr/src/app/nut_servers.ini
+  #   depends_on: 
+  #     - influxdb
     
